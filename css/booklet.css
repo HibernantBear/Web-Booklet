@@ -1,0 +1,481 @@
+@charset "UTF-8";
+/* 拖拽与否的函数，同时改变鼠标的样式（electron里面move样式不可用）*/
+.config_drag {
+  -webkit-app-region: drag;
+  cursor: move;
+}
+.config_no_drag {
+  -webkit-app-region: no-drag;
+  cursor: default;
+}
+body {
+  -webkit-user-select: none;
+  background-color: transparent;
+  width: 855px;
+  height: 633.5px;
+}
+.book_shell {
+  position: absolute;
+  left: 70px;
+  top: 70px;
+  width: 765px;
+  height: 493.5px;
+}
+.book_bg {
+  -webkit-app-region: drag;
+  cursor: move;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 765px;
+  height: 493.5px;
+  background-color: #584631;
+  border-style: solid;
+  border-width: 2px 5px 5px 2px;
+  border-radius: 5px 25px 25px 5px;
+  border-color: #352b20;
+  box-shadow: 2px 2px 20px 3px rgba(0, 0, 0, 0.75);
+}
+.book_bg:before {
+  content: "";
+  position: absolute;
+  left: 14px;
+  top: 14px;
+  width: 735px;
+  height: 463.5px;
+  border-style: dashed;
+  border-width: 2px;
+  border-radius: 5px 25px 25px 5px;
+  border-color: #f3e2c2;
+}
+.book_pages {
+  -webkit-app-region: no-drag;
+  cursor: default;
+  position: absolute;
+  left: 5px;
+  top: 21px;
+  right: 161px;
+  bottom: 21px;
+  background-color: #eddfc9;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 5px;
+  border-color: #c1b291;
+  text-shadow: 2px 2px 5px black;
+}
+/* 书页特效 */
+.book_pages:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 2px;
+  bottom: 1px;
+  left: 0;
+  border-radius: 0 5px 5px 0;
+  border-right: 2px solid #c1b291;
+  border-bottom: 2px solid #c1b291;
+}
+.book_pages:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 6px;
+  bottom: 4px;
+  left: 0;
+  border-radius: 0 5px 5px 0;
+  border-right: 2px solid #c1b291;
+  border-bottom: 2px solid #c1b291;
+}
+.book_stickers {
+  position: absolute;
+  top: 21px;
+  right: 30px;
+  bottom: 21px;
+  width: 136px;
+}
+.book_sticker_close {
+  -webkit-app-region: no-drag;
+  float: right;
+  position: relative;
+  right: 40px;
+  top: 10px;
+  height: 38px;
+  width: 76px;
+  cursor: default;
+}
+.book_sticker_close div {
+  float: right;
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  bottom: 1px;
+  width: 75px;
+  padding-right: 20px;
+  cursor: pointer;
+  background-color: #c85967;
+  line-height: 32px;
+  color: black;
+  font-size: 24px;
+  font-weight: bold;
+  font-family: 微软雅黑;
+  text-align: right;
+  overflow: hidden;
+  border-style: solid;
+  border-width: 2px 2px 2px 0;
+  border-radius: 0 2px 2px 0;
+  border-color: #d57f8a #b33b4a #8c2f3a #c85967;
+  box-shadow: 4px 2px 10px 0px rgba(0, 0, 0, 0.75);
+  transition: all 0.4s;
+}
+.book_sticker_close div:hover {
+  background-color: #d57f8a;
+  color: rgba(38, 38, 38, 0.85);
+  width: 110px;
+  box-shadow: 4px 2px 10px 0px rgba(0, 0, 0, 0.25);
+  transition: all 0.8s;
+}
+.book_sticker_1 {
+  -webkit-app-region: no-drag;
+  float: right;
+  position: relative;
+  right: 0px;
+  top: 20px;
+  height: 38px;
+  width: 116px;
+  cursor: default;
+}
+.book_sticker_1 div {
+  float: right;
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  bottom: 1px;
+  width: 115px;
+  padding-right: 20px;
+  cursor: pointer;
+  background-color: #c9569e;
+  line-height: 32px;
+  color: black;
+  font-size: 24px;
+  font-weight: bold;
+  font-family: 微软雅黑;
+  text-align: right;
+  overflow: hidden;
+  border-style: solid;
+  border-width: 2px 2px 2px 0;
+  border-radius: 0 2px 2px 0;
+  border-color: #d57db4 #b33985 #8c2d69 #c9569e;
+  box-shadow: 4px 2px 10px 0px rgba(0, 0, 0, 0.75);
+  transition: all 0.4s;
+}
+.book_sticker_1 div:hover {
+  background-color: #d57db4;
+  color: rgba(38, 38, 38, 0.85);
+  width: 150px;
+  box-shadow: 4px 2px 10px 0px rgba(0, 0, 0, 0.25);
+  transition: all 0.8s;
+}
+.book_sticker_2 {
+  -webkit-app-region: no-drag;
+  float: right;
+  position: relative;
+  right: 0px;
+  top: 30px;
+  height: 38px;
+  width: 116px;
+  cursor: default;
+}
+.book_sticker_2 div {
+  float: right;
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  bottom: 1px;
+  width: 115px;
+  padding-right: 20px;
+  cursor: pointer;
+  background-color: #bb35cd;
+  line-height: 32px;
+  color: black;
+  font-size: 24px;
+  font-weight: bold;
+  font-family: 微软雅黑;
+  text-align: right;
+  overflow: hidden;
+  border-style: solid;
+  border-width: 2px 2px 2px 0;
+  border-radius: 0 2px 2px 0;
+  border-color: #c95ed7 #9729a6 #721f7d #bb35cd;
+  box-shadow: 4px 2px 10px 0px rgba(0, 0, 0, 0.75);
+  transition: all 0.4s;
+}
+.book_sticker_2 div:hover {
+  background-color: #c95ed7;
+  color: rgba(38, 38, 38, 0.85);
+  width: 150px;
+  box-shadow: 4px 2px 10px 0px rgba(0, 0, 0, 0.25);
+  transition: all 0.8s;
+}
+.book_sticker_3 {
+  -webkit-app-region: no-drag;
+  float: right;
+  position: relative;
+  right: 0px;
+  top: 40px;
+  height: 38px;
+  width: 116px;
+  cursor: default;
+}
+.book_sticker_3 div {
+  float: right;
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  bottom: 1px;
+  width: 115px;
+  padding-right: 20px;
+  cursor: pointer;
+  background-color: #5d4bd0;
+  line-height: 32px;
+  color: black;
+  font-size: 24px;
+  font-weight: bold;
+  font-family: 微软雅黑;
+  text-align: right;
+  overflow: hidden;
+  border-style: solid;
+  border-width: 2px 2px 2px 0;
+  border-radius: 0 2px 2px 0;
+  border-color: #8173db #4230b8 #342590 #5d4bd0;
+  box-shadow: 4px 2px 10px 0px rgba(0, 0, 0, 0.75);
+  transition: all 0.4s;
+}
+.book_sticker_3 div:hover {
+  background-color: #8173db;
+  color: rgba(38, 38, 38, 0.85);
+  width: 150px;
+  box-shadow: 4px 2px 10px 0px rgba(0, 0, 0, 0.25);
+  transition: all 0.8s;
+}
+.book_sticker_4 {
+  -webkit-app-region: no-drag;
+  float: right;
+  position: relative;
+  right: 0px;
+  top: 50px;
+  height: 38px;
+  width: 116px;
+  cursor: default;
+}
+.book_sticker_4 div {
+  float: right;
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  bottom: 1px;
+  width: 115px;
+  padding-right: 20px;
+  cursor: pointer;
+  background-color: #5abbc0;
+  line-height: 32px;
+  color: black;
+  font-size: 24px;
+  font-weight: bold;
+  font-family: 微软雅黑;
+  text-align: right;
+  overflow: hidden;
+  border-style: solid;
+  border-width: 2px 2px 2px 0;
+  border-radius: 0 2px 2px 0;
+  border-color: #7fcace #40a2a7 #327e82 #5abbc0;
+  box-shadow: 4px 2px 10px 0px rgba(0, 0, 0, 0.75);
+  transition: all 0.4s;
+}
+.book_sticker_4 div:hover {
+  background-color: #7fcace;
+  color: rgba(38, 38, 38, 0.85);
+  width: 150px;
+  box-shadow: 4px 2px 10px 0px rgba(0, 0, 0, 0.25);
+  transition: all 0.8s;
+}
+.book_sticker_5 {
+  -webkit-app-region: no-drag;
+  float: right;
+  position: relative;
+  right: 0px;
+  top: 60px;
+  height: 38px;
+  width: 116px;
+  cursor: default;
+}
+.book_sticker_5 div {
+  float: right;
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  bottom: 1px;
+  width: 115px;
+  padding-right: 20px;
+  cursor: pointer;
+  background-color: #76d068;
+  line-height: 32px;
+  color: black;
+  font-size: 24px;
+  font-weight: bold;
+  font-family: 微软雅黑;
+  text-align: right;
+  overflow: hidden;
+  border-style: solid;
+  border-width: 2px 2px 2px 0;
+  border-radius: 0 2px 2px 0;
+  border-color: #99dc8f #53c441 #41a032 #76d068;
+  box-shadow: 4px 2px 10px 0px rgba(0, 0, 0, 0.75);
+  transition: all 0.4s;
+}
+.book_sticker_5 div:hover {
+  background-color: #99dc8f;
+  color: rgba(38, 38, 38, 0.85);
+  width: 150px;
+  box-shadow: 4px 2px 10px 0px rgba(0, 0, 0, 0.25);
+  transition: all 0.8s;
+}
+.book_sticker_6 {
+  -webkit-app-region: no-drag;
+  float: right;
+  position: relative;
+  right: 0px;
+  top: 70px;
+  height: 38px;
+  width: 116px;
+  cursor: default;
+}
+.book_sticker_6 div {
+  float: right;
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  bottom: 1px;
+  width: 115px;
+  padding-right: 20px;
+  cursor: pointer;
+  background-color: #d1d453;
+  line-height: 32px;
+  color: black;
+  font-size: 24px;
+  font-weight: bold;
+  font-family: 微软雅黑;
+  text-align: right;
+  overflow: hidden;
+  border-style: solid;
+  border-width: 2px 2px 2px 0;
+  border-radius: 0 2px 2px 0;
+  border-color: #dcde7c #c0c331 #989a27 #d1d453;
+  box-shadow: 4px 2px 10px 0px rgba(0, 0, 0, 0.75);
+  transition: all 0.4s;
+}
+.book_sticker_6 div:hover {
+  background-color: #dcde7c;
+  color: rgba(38, 38, 38, 0.85);
+  width: 150px;
+  box-shadow: 4px 2px 10px 0px rgba(0, 0, 0, 0.25);
+  transition: all 0.8s;
+}
+.book_sticker_7 {
+  -webkit-app-region: no-drag;
+  float: right;
+  position: relative;
+  right: 0px;
+  top: 80px;
+  height: 38px;
+  width: 116px;
+  cursor: default;
+}
+.book_sticker_7 div {
+  float: right;
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  bottom: 1px;
+  width: 115px;
+  padding-right: 20px;
+  cursor: pointer;
+  background-color: #d18c47;
+  line-height: 32px;
+  color: black;
+  font-size: 24px;
+  font-weight: bold;
+  font-family: 微软雅黑;
+  text-align: right;
+  overflow: hidden;
+  border-style: solid;
+  border-width: 2px 2px 2px 0;
+  border-radius: 0 2px 2px 0;
+  border-color: #dba670 #b7732e #8e5924 #d18c47;
+  box-shadow: 4px 2px 10px 0px rgba(0, 0, 0, 0.75);
+  transition: all 0.4s;
+}
+.book_sticker_7 div:hover {
+  background-color: #dba670;
+  color: rgba(38, 38, 38, 0.85);
+  width: 150px;
+  box-shadow: 4px 2px 10px 0px rgba(0, 0, 0, 0.25);
+  transition: all 0.8s;
+}
+.book_text_info {
+  -webkit-app-region: drag;
+  cursor: move;
+  float: left;
+  position: relative;
+  top: 95px;
+  width: 135px;
+  padding-left: 15px;
+  font-size: 16px;
+  font-weight: bold;
+  font-family: 微软雅黑;
+  color: #d3d3d3;
+  text-shadow: 2px 2px 5px black;
+}
+.book_text_info .book_text_version {
+  padding-left: 12px;
+  font-size: 12px;
+}
+.book_text_info .book_text_author {
+  float: right;
+  padding-right: 10px;
+  font-size: 12px;
+}
+.book_cover {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 605px;
+  height: 493.5px;
+  perspective: 2500px;
+  -webkit-perspective: 3000px;
+}
+.book_cover #book_cover {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 605px;
+  height: 493.5px;
+  background-color: #584631;
+  border-style: solid;
+  border-width: 2px 5px 5px 2px;
+  border-radius: 5px 25px 25px 5px;
+  border-color: #352b20;
+  box-shadow: 2px 2px 20px 3px rgba(0, 0, 0, 0.75);
+  transform-style: preserve-3d;
+  transform-origin: left center;
+  transform: rotateY(-1deg);
+  -webkit-transform: rotateY(-1deg);
+}
+.book_cover #book_cover h1 {
+  text-align: center;
+  padding-top: 50px;
+  font-size: 48px;
+  font-weight: bold;
+  font-family: 微软雅黑;
+  color: #e1b766;
+  text-shadow: 1px 2px 2px rgba(255, 255, 255, 0.75), -1px -2px 2px rgba(0, 0, 0, 0.75);
+}

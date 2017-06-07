@@ -1,0 +1,256 @@
+// out: ../css/
+@charset "UTF-8";
+
+@size_book_height: 463.5px;
+@size_book_width: 750px;
+@size_book_edge_extern: 15px;
+@size_book_shadow_area: 20px;
+@size_book_thread: 2px;
+@size_sticker_width: 115px;
+@size_sticker_height: 36px;
+@size_page_flip: 50px;
+
+@color_book_shell_bg: rgba(88,70,49,1.00);  // 书壳颜色
+@color_book_shell_border: rgba(53,43,32,1.00);  // 书壳边缘颜色
+@color_book_shell_thread: rgba(243,226,194,1.00);
+@color_book_pages_bg: rgba(237,223,201,1.00);  // 书页颜色
+@color_book_pages_border: rgba(193,178,145,1.00);  // 书页边缘阴影颜色
+
+/* 拖拽与否的函数，同时改变鼠标的样式（electron里面move样式不可用）*/
+.config_drag{
+	-webkit-app-region: drag;
+	cursor: move;
+}
+.config_no_drag{
+	-webkit-app-region: no-drag;
+	cursor: default;
+}
+
+body{
+	-webkit-user-select: none;
+	background-color: transparent;
+	width: @size_book_width + @size_book_edge_extern + (@size_book_shadow_area * 2) + @size_page_flip;
+	height: @size_book_height + (@size_book_edge_extern * 2) + (@size_book_shadow_area * 2) + (@size_page_flip * 2);
+}
+.book_shell{
+	position: absolute;
+	left: @size_book_shadow_area + @size_page_flip;
+	top: @size_book_shadow_area + @size_page_flip;
+	width: @size_book_width + @size_book_edge_extern;
+	height: @size_book_height + (@size_book_edge_extern * 2);
+}
+.book_bg{
+	.config_drag();
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: @size_book_width + @size_book_edge_extern;
+	height: @size_book_height + (@size_book_edge_extern * 2);
+	background-color: @color_book_shell_bg;
+	border-style: solid;
+	border-width: 2px 5px 5px 2px;
+	border-radius: 5px 25px 25px 5px;
+	border-color: @color_book_shell_border;
+	box-shadow: 2px 2px 20px 3px rgba(0,0,0,0.75);
+	&:before{
+		content: "";
+		position: absolute;
+		left: @size_book_edge_extern - (@size_book_thread / 2);
+		top: @size_book_edge_extern - (@size_book_thread / 2);
+		width: @size_book_width - @size_book_edge_extern;
+		height: @size_book_height;
+		border-style: dashed;
+		border-width: @size_book_thread;
+		border-radius: 5px 25px 25px 5px;
+		border-color: @color_book_shell_thread;
+	}
+}
+.book_pages{
+	.config_no_drag();
+	position: absolute;
+	left: 5px;
+	top: 6px + @size_book_edge_extern;
+	right: 146px + @size_book_edge_extern;
+	bottom: 6px + @size_book_edge_extern;
+	background-color: @color_book_pages_bg;
+	border-style: solid;
+	border-width: 1px;
+	border-radius: 5px;
+	border-color: @color_book_pages_border;
+	text-shadow: 2px 2px 5px black;
+}
+
+/* 书页特效 */
+.fx_book_pages(@right, @bottom){
+	content: '';
+	position: absolute;
+	top: 0; right: @right; bottom: @bottom; left: 0;
+	border-radius: 0 5px 5px 0;
+	border-right: 2px solid @color_book_pages_border;
+	border-bottom: 2px solid @color_book_pages_border;
+}
+.fx_book_pages_n(@n){
+	@right: (2 * (@n * 2 - 1)) * 1px;
+	@bottom: (@n + 2 * (@n - 1)) * 1px;
+	.fx_book_pages(@right, @bottom);
+}
+
+.book_pages:before{
+	.fx_book_pages_n(1);
+}
+.book_pages:after{
+	.fx_book_pages_n(2);
+}
+.book_stickers{
+	position: absolute;
+	top: 6px + @size_book_edge_extern; right: 15px + @size_book_edge_extern; bottom: 6px + @size_book_edge_extern;
+	width: 136px;
+}
+.book_sticker(@n, @color, @right:0px, @width:@size_sticker_width, @width_hover:150px){
+	@sticker_height: 36px;
+	@color_text: black;
+	.config_no_drag();
+	float: right;
+	position: relative;
+	right: @right; top: 10px * (@n + 1);
+	height: @sticker_height + 2px;
+	width: @width + 1px;
+	cursor: default;
+	div{
+		float: right;
+		position: absolute;
+		top: 1px; right: 1px; bottom: 1px;
+		width: @width;
+		padding-right: 20px;
+		
+		cursor: pointer;
+		
+		background-color: @color;
+		
+		line-height: @sticker_height - 4px;
+		color: @color_text;
+		font-size: 24px;
+		font-weight: bold;
+		font-family: 微软雅黑;
+		text-align: right;
+		overflow: hidden;
+		
+		border-style: solid;
+		border-width: 2px 2px 2px 0;
+		border-radius: 0 2px 2px 0;
+		border-color: lighten(@color, 10%) darken(@color, 10%) darken(@color, 20%) @color;
+		
+		box-shadow: 4px 2px 10px 0px rgba(0,0,0,0.75);
+		
+		transition: all 0.4s;
+		&:hover{
+			background-color: lighten(@color, 10%);
+			color: fadeout(lighten(@color_text, 15%), 15%);
+			width: @width_hover;
+			box-shadow: 4px 2px 10px 0px rgba(0,0,0,0.25);
+			transition: all 0.8s;
+		};
+	};
+	// 本来这里有用，但是出现了一个未知的bug
+//	&:after{
+//		content: "";
+//		position: absolute;
+//		right: -0.5px;
+//		height: 0px; width: 0px;
+//		background-color: transparent;
+//		border: 16px solid transparent;
+//		border-right-color: @color_book_shell_bg;
+//	};
+//	&:before{
+//		content: "";
+//		position: absolute;
+//		top: -2px; right: 0px;
+//		height: 0px; width: 0px;
+//		background-color: transparent;
+//		border: 18px solid transparent;
+//		border-right-color: black;
+//	};
+}
+.book_sticker_close{
+//	background-color:rgba(201,86,158,1.00)
+	.book_sticker(0, rgba(200,89,103,1.00), 40px, 75px, 110px);
+}
+.book_sticker_1{
+	.book_sticker(1, rgba(201,86,158,1.00));
+}
+.book_sticker_2{
+	.book_sticker(2, rgba(187,53,205,1.00));
+}
+.book_sticker_3{
+	.book_sticker(3, rgba(93,75,208,1.00));
+}
+.book_sticker_4{
+	.book_sticker(4, rgba(90,187,192,1.00));
+}
+.book_sticker_5{
+	.book_sticker(5, rgba(118,208,104,1.00));
+}
+.book_sticker_6{
+	.book_sticker(6, rgba(209,212,83,1.00));
+}
+.book_sticker_7{
+	.book_sticker(7, rgba(209,140,71,1.00));
+}
+.book_text_info{
+	.config_drag();
+	float: left;
+	position: relative;
+	top: 95px;
+	width: 135px;
+	padding-left: 15px;
+	
+	font-size: 16px;
+	font-weight: bold;
+	font-family: 微软雅黑;
+	color: rgba(211,211,211,1.00);
+	text-shadow: 2px 2px 5px black;
+	.book_text_version{
+		padding-left: 12px;
+		font-size: 12px;
+	}
+	.book_text_author{
+		float: right;
+		padding-right: 10px;
+		font-size: 12px;
+	}
+}
+.book_cover{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: @size_book_width - @size_book_edge_extern - @size_sticker_width - 15px;
+	height: @size_book_height + (@size_book_edge_extern * 2);
+	perspective: 2500px;
+	-webkit-perspective: 3000px;
+	#book_cover{
+		position: absolute;
+		left: 0;
+		top: 0;
+		width: @size_book_width - @size_book_edge_extern - @size_sticker_width - 15px;
+		height: @size_book_height + (@size_book_edge_extern * 2);
+		background-color: @color_book_shell_bg;
+		border-style: solid;
+		border-width: 2px 5px 5px 2px;
+		border-radius: 5px 25px 25px 5px;
+		border-color: @color_book_shell_border;
+		box-shadow: 2px 2px 20px 3px rgba(0,0,0,0.75);
+		transform-style: preserve-3d;
+		transform-origin: left center;
+		transform: rotateY(-1deg);
+		-webkit-transform: rotateY(-1deg);
+		h1{
+			text-align: center;
+			padding-top: 50px;
+			font-size: 48px;
+			font-weight: bold;
+			font-family: 微软雅黑;
+			color: rgba(225,183,102,1.00);
+			text-shadow: 1px 2px 2px rgba(255,255,255,0.75), -1px -2px 2px rgba(0,0,0,0.75);
+		}
+	}
+}
